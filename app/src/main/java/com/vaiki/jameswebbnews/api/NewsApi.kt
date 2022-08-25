@@ -1,6 +1,6 @@
 package com.vaiki.jameswebbnews.api
 
-import com.vaiki.jameswebbnews.ui.NewsResponse
+import com.vaiki.jameswebbnews.models.NewsResponse
 import com.vaiki.jameswebbnews.util.Constants.Companion.API_KEY
 import com.vaiki.jameswebbnews.util.Constants.Companion.BASE_URL
 import okhttp3.OkHttpClient

@@ -1,4 +1,4 @@
-package com.vaiki.jameswebbnews.ui
+package com.vaiki.jameswebbnews.models
 
 data class Source(
     val id: Any,
