@@ -33,7 +33,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsViewHolder>() {
         val article = differ.currentList[position]
         holder.bind(article)
         holder.itemView.setOnClickListener {
-            onItemClickListener?.let { it }
+            onItemClickListener?.let { it(article) }
         }
     }
 

@@ -4,7 +4,9 @@ package com.vaiki.jameswebbnews.ui.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vaiki.jameswebbnews.R
 import com.vaiki.jameswebbnews.adapters.NewsAdapter
@@ -24,6 +26,13 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentBreakingNewsBinding.bind(view)
         initRecyclerView()
+
+        newsAdapter.setOnItemClickListener {
+            findNavController().navigate(
+                R.id.action_breakingNewsFragment2_to_articleFragment,
+                bundleOf(ArticleFragment.ARTICLE_KEY to it.url)
+            )
+        }
 
         viewModel.breakingNews.observe(viewLifecycleOwner) { response ->
             when (response) {

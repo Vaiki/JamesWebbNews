@@ -3,8 +3,10 @@ package com.vaiki.jameswebbnews.ui.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vaiki.jameswebbnews.R
 import com.vaiki.jameswebbnews.adapters.NewsAdapter
@@ -27,7 +29,11 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSearchNewsBinding.bind(view)
         initRecyclerView()
-
+        newsAdapter.setOnItemClickListener {
+            findNavController().navigate(
+                R.id.action_searchNewsFragment_to_articleFragment,
+                bundleOf(ArticleFragment.ARTICLE_KEY to it.url))
+        }
         var job: Job? = null
         binding.etSearch.addTextChangedListener {
             job?.cancel()
