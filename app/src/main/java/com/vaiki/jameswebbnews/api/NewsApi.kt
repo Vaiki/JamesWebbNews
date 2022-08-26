@@ -15,15 +15,16 @@ interface NewsApi {
     @GET("/v2/top-headlines")
     suspend fun getBreakingNews(
         @Query("q")
-        jamesNews: String = "James Webb",
+        SpaceNews: String = "Space",
         @Query("country")
-        country: String = "ru",
+        country: String = "us",
         @Query("page")
         pageNumber: Int = 1,
+        @Query("apiKey")
         apiKey: String = API_KEY
     ): Response<NewsResponse>
 
-    @GET("/v2/top-headlines")
+    @GET("/v2/everything")
     suspend fun searchNews(
         @Query("q")
         search: String,
@@ -31,6 +32,7 @@ interface NewsApi {
         language: String = "ru",
         @Query("page")
         pageNumber: Int = 1,
+        @Query("apiKey")
         apiKey: String = API_KEY
     ): Response<NewsResponse>
 

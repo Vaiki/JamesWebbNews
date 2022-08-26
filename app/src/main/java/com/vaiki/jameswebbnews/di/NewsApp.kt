@@ -36,9 +36,10 @@ class NewsApp : Application() {
         }
         single { provideDataBase(androidApplication()) }
         single { provideDao(get()) }
-        single { NewsRepository(get()) }
+
     }
     private val newsViewModel = module {
+        single { NewsRepository(get()) }
         viewModel { NewsViewModel(get()) }
     }
 
