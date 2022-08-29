@@ -3,7 +3,7 @@ package com.vaiki.jameswebbnews.ui
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Query
+import com.vaiki.jameswebbnews.models.Article
 import com.vaiki.jameswebbnews.models.NewsResponse
 import com.vaiki.jameswebbnews.repository.NewsRepository
 import com.vaiki.jameswebbnews.util.Resource
@@ -16,6 +16,7 @@ class NewsViewModel(private val repository: NewsRepository) : ViewModel() {
     var breakingNewsPage = 1
     val searchNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var searchNewsPage = 1
+    val openArticleLiveData: MutableLiveData<Article> = MutableLiveData()
 
 
     init {
@@ -50,5 +51,19 @@ class NewsViewModel(private val repository: NewsRepository) : ViewModel() {
             }
         }
         return Resource.Error(response.message())
+    }
+
+    fun saveArticle(article: Article) = viewModelScope.launch {
+        repository.upsert(article)
+    }
+
+    fun openArticle(article: Article) {
+        openArticleLiveData.value = article
+    }
+
+    fun getSavedNews() = repository.getSavedNews()
+
+    fun deleteArticle(article: Article) = viewModelScope.launch {
+        repository.deleteArticle(article)
     }
 }

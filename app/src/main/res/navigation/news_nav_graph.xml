@@ -31,7 +31,11 @@
     <fragment
         android:id="@+id/articleFragment"
         android:name="com.vaiki.jameswebbnews.ui.fragments.ArticleFragment"
-        android:label="ArticleFragment" />
+        android:label="ArticleFragment" >
+        <argument
+            android:name="article"
+            app:argType="com.vaiki.jameswebbnews.models.Article" />
+    </fragment>
     <fragment
         android:id="@+id/searchNewsFragment"
         android:name="com.vaiki.jameswebbnews.ui.fragments.SearchNewsFragment"

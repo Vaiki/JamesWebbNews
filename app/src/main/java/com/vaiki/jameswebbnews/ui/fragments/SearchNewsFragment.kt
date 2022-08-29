@@ -32,7 +32,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         newsAdapter.setOnItemClickListener {
             findNavController().navigate(
                 R.id.action_searchNewsFragment_to_articleFragment,
-                bundleOf(ArticleFragment.ARTICLE_KEY to it.url))
+                bundleOf(ArticleFragment.ARTICLE_KEY to it))
         }
         var job: Job? = null
         binding.etSearch.addTextChangedListener {
