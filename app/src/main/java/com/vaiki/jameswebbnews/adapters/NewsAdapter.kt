@@ -51,7 +51,7 @@ class NewsViewHolder(private val binding: ItemArticlePreviewBinding) :
 
     fun bind(article: Article) {
         with(binding) {
-            tvSource.text = article.source.name
+            tvSource.text = article.source?.name
             tvTitle.text = article.title
             tvDescription.text = article.description
             tvPublishedAt.text = article.publishedAt

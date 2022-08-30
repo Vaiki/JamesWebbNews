@@ -30,9 +30,10 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         _binding = FragmentSearchNewsBinding.bind(view)
         initRecyclerView()
         newsAdapter.setOnItemClickListener {
+            viewModel.openArticle(it)
             findNavController().navigate(
-                R.id.action_searchNewsFragment_to_articleFragment,
-                bundleOf(ArticleFragment.ARTICLE_KEY to it))
+                R.id.action_searchNewsFragment_to_articleFragment
+            )
         }
         var job: Job? = null
         binding.etSearch.addTextChangedListener {
@@ -40,7 +41,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
             job = MainScope().launch {
                 delay(500L)
                 it?.let {
-                    if(it.toString().isNotEmpty()){
+                    if (it.toString().isNotEmpty()) {
                         viewModel.getSearchNews(it.toString())
                     }
                 }
@@ -86,7 +87,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         }
 
 
-}
+    }
 
     override fun onDestroy() {
         super.onDestroy()
