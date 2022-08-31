@@ -11,9 +11,11 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.vaiki.jameswebbnews.R
 import com.vaiki.jameswebbnews.databinding.ActivityNewsBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewsBinding
+    private val newsViewModel by viewModel<NewsViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewsBinding.inflate(layoutInflater)
