@@ -8,10 +8,13 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.work.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.vaiki.jameswebbnews.R
 import com.vaiki.jameswebbnews.databinding.ActivityNewsBinding
+import com.vaiki.jameswebbnews.workmanager.BreakingNewsWorker
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.concurrent.TimeUnit
 
 class NewsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewsBinding
@@ -20,7 +23,7 @@ class NewsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+       periodicNotify()
         val navView = binding.bottomNavigationView
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.newsNavHostFragment) as NavHostFragment
@@ -34,5 +37,17 @@ class NewsActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    fun periodicNotify() {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val myWorkRequest = PeriodicWorkRequest.Builder(BreakingNewsWorker::class.java,15,TimeUnit.MINUTES)
+            .setConstraints(constraints)
+            .addTag("breaking_news")
+            .build()
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("breaking_news",ExistingPeriodicWorkPolicy.KEEP,myWorkRequest)
     }
 }

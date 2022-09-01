@@ -30,6 +30,8 @@ interface NewsApi {
         search: String,
         @Query("language")
         language: String = "ru",
+        @Query("sortBy")
+        sortBy:String ="publishedAt",
         @Query("page")
         pageNumber: Int = 1,
         @Query("apiKey")
