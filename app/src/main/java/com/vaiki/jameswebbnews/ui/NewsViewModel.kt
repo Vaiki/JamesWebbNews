@@ -13,19 +13,19 @@ import retrofit2.Response
 class NewsViewModel(private val repository: NewsRepository) : ViewModel() {
 
     val breakingNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
-    var breakingNewsPage = 1
+
     val searchNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var searchNewsPage = 1
     val openArticleLiveData: MutableLiveData<Article> = MutableLiveData()
 
 
     init {
-        getBreakingNews("us")
+        getBreakingNews()
     }
 
-    fun getBreakingNews(country: String) = viewModelScope.launch {
+    fun getBreakingNews() = viewModelScope.launch {
         breakingNews.postValue(Resource.Loading())
-        val response = repository.getBreakingNews(country, breakingNewsPage)
+        val response = repository.getBreakingNews()
         breakingNews.postValue(handleBreakingNewsResponse(response))
     }
 

@@ -6,11 +6,11 @@ import com.vaiki.jameswebbnews.data.ArticleDao
 import com.vaiki.jameswebbnews.models.Article
 
 class NewsRepository(val articleDao: ArticleDao) {
-    suspend fun getBreakingNews(country: String, pageNumber: Int) =
-        NewsApi.api.getBreakingNews("Space" , country, pageNumber)
+    suspend fun getBreakingNews() =
+        NewsApi.api.getBreakingNews()
 
     suspend fun searchNews(searchQuery: String, pageNumber: Int) =
-        NewsApi.api.searchNews(searchQuery, "ru", pageNumber)
+        NewsApi.api.searchNews(searchQuery, "ru","publishedAt", pageNumber)
 
     suspend fun upsert(article: Article) = articleDao.upsert(article)
 
