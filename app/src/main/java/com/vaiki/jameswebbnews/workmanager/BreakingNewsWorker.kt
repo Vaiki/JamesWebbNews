@@ -30,7 +30,6 @@ class BreakingNewsWorker(
     companion object {
         const val CHANNEL_ID = "channel_id"
         const val NOTIFICATION_ID = 1
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -39,7 +38,7 @@ class BreakingNewsWorker(
         return if (response.isSuccessful) {
             newNews = response.body()?.articles?.first()?.url.toString()
             oldNews = newsPreferences.getString("oldNews", "firstData").toString()
-            Log.e("preferences", "old data - ${newsPreferences.getString("oldNews", "").toString()}")
+            Log.e("preferences", "old data - ${newsPreferences.getString("oldNews", "first data").toString()}")
             if (oldNews != newNews) {
                 val notificationText = response.body()?.articles?.first()?.title
                 notificationText?.let { showNotification(it) }
@@ -56,12 +55,11 @@ class BreakingNewsWorker(
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun showNotification(desTxt: String) {
-        lateinit var pendingIntent:PendingIntent
         val intent = Intent(applicationContext, NewsActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
-        //var pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, 0)
-        pendingIntent = PendingIntent.getBroadcast(applicationContext,0,intent,(PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
+
+       val pendingIntent = PendingIntent.getActivity(applicationContext,0,intent,(PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
         val notification = Notification.Builder(applicationContext, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_breaking_news)
             .setContentTitle("Breaking News!")

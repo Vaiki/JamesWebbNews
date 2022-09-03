@@ -40,7 +40,7 @@ class NewsApp : Application() {
     }
     private val newsViewModel = module {
         single { NewsRepository(get()) }
-        viewModel { NewsViewModel(get()) }
+        viewModel { NewsViewModel(androidApplication(),get()) }
     }
 
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 
 import androidx.fragment.app.Fragment
@@ -90,7 +91,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Log.e(TAG, message)
+                        Toast.makeText(activity,"Произошла ошибка: $message", Toast.LENGTH_LONG).show()
                     }
                 }
                 is Resource.Loading -> {
