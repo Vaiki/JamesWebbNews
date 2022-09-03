@@ -1,5 +1,6 @@
 package com.vaiki.jameswebbnews.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.webkit.WebViewClient
@@ -26,9 +27,19 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
                 webViewClient = WebViewClient()
                 article.url?.let { loadUrl(it) }
             }
-            binding.fab.setOnClickListener {
+            binding.fabSave.setOnClickListener {
                 viewModel.saveArticle(article)
                 Snackbar.make(view,"Article saved successfully",Snackbar.LENGTH_SHORT).show()
+            }
+            binding.fabShare.setOnClickListener {
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, article.url)
+                    type = "text/plain"
+                }
+
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                startActivity(shareIntent)
             }
         }
 

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SpaceNews</string>
+    <string name="save">Сохранить</string>
+    <string name="share">Поделиться</string>
 </resources>
