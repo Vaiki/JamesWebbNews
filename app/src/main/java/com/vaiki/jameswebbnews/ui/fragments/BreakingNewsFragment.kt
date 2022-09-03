@@ -4,6 +4,7 @@ package com.vaiki.jameswebbnews.ui.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,7 +45,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Log.e(TAG, message)
+                        Toast.makeText(activity,"Произошла ошибка: $message",Toast.LENGTH_LONG).show()
                     }
                 }
                 is Resource.Loading -> {
