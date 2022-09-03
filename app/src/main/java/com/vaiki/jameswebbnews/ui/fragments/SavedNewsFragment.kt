@@ -34,7 +34,7 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
         }
 
         ItemTouchHelper(swipedArticleForDelete(view)).apply {
-        attachToRecyclerView(binding.rvSavedNews)
+            attachToRecyclerView(binding.rvSavedNews)
         }
 
 
@@ -44,7 +44,7 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
 
     }
 
-    fun initRecyclerView() {
+    private fun initRecyclerView() {
         newsAdapter = NewsAdapter()
         binding.rvSavedNews.apply {
             adapter = newsAdapter
@@ -52,7 +52,7 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
         }
     }
 
-    fun swipedArticleForDelete(view: View): ItemTouchHelper.SimpleCallback {
+    private fun swipedArticleForDelete(view: View): ItemTouchHelper.SimpleCallback {
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
@@ -72,9 +72,10 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
                 Snackbar.make(view, "Successfully deleted article", Snackbar.LENGTH_LONG).apply {
                     setAction("Undo") {
                         viewModel.saveArticle(article)
-                        show()
                     }
-                }
+                }.show()
+
+
             }
 
         }

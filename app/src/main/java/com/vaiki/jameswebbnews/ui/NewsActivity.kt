@@ -19,10 +19,13 @@ import java.util.concurrent.TimeUnit
 class NewsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewsBinding
     private val newsViewModel by viewModel<NewsViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
        periodicNotify()
         val navView = binding.bottomNavigationView
         val navHostFragment =
@@ -39,7 +42,7 @@ class NewsActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    fun periodicNotify() {
+    private fun periodicNotify() {
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
@@ -49,5 +52,9 @@ class NewsActivity : AppCompatActivity() {
             .addTag("breaking_news")
             .build()
         WorkManager.getInstance(this).enqueueUniquePeriodicWork("breaking_news",ExistingPeriodicWorkPolicy.KEEP,myWorkRequest)
+    }
+
+    companion object {
+        const val APP_PREFERENCES = "old_news"
     }
 }
