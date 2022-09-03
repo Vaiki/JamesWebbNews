@@ -2,6 +2,7 @@ package com.vaiki.jameswebbnews.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit
 class NewsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewsBinding
     private val newsViewModel by viewModel<NewsViewModel>()
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +32,7 @@ class NewsActivity : AppCompatActivity() {
         val navView = binding.bottomNavigationView
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.newsNavHostFragment) as NavHostFragment
-        val navController = navHostFragment.navController
+        navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.breakingNewsFragment,
@@ -40,6 +42,10 @@ class NewsActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+    }
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
     private fun periodicNotify() {
@@ -57,4 +63,5 @@ class NewsActivity : AppCompatActivity() {
     companion object {
         const val APP_PREFERENCES = "old_news"
     }
+
 }
