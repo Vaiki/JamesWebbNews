@@ -56,16 +56,21 @@ class BreakingNewsWorker(
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun showNotification(desTxt: String) {
+        lateinit var pendingIntent:PendingIntent
         val intent = Intent(applicationContext, NewsActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
-        val pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, 0)
+        //var pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, 0)
+        pendingIntent = PendingIntent.getBroadcast(applicationContext,0,intent,(PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
         val notification = Notification.Builder(applicationContext, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_breaking_news)
             .setContentTitle("Breaking News!")
             .setContentText(desTxt)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
+
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelName = "channel name"
             val channelDescription = "channel Description"
@@ -77,6 +82,7 @@ class BreakingNewsWorker(
                 applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
+
         with(NotificationManagerCompat.from(applicationContext)) {
             notify(NOTIFICATION_ID, notification.build())
         }
