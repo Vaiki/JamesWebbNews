@@ -32,7 +32,7 @@ interface NewsApi {
     @GET("/v2/everything")
     suspend fun followNews(
         @Query("q")
-        search: String = "космос",
+        search: String = "space",
         @Query("language")
         language: String = "ru",
         @Query("sortBy")

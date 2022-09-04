@@ -18,6 +18,7 @@
         app:fabSize="normal"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
+        app:backgroundTint="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="@string/save" />
@@ -27,6 +28,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_share_24"
         android:layout_marginEnd="20dp"
+        app:backgroundTint="@android:color/holo_green_light"
         app:fabSize="mini"
         app:layout_constraintBottom_toTopOf="@+id/fabSave"
         app:layout_constraintEnd_toEndOf="parent"
