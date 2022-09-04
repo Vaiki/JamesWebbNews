@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import androidx.preference.PreferenceManager.*
 import androidx.work.CoroutineWorker
+import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.vaiki.jameswebbnews.R
 import com.vaiki.jameswebbnews.api.NewsApi
@@ -32,9 +33,11 @@ class BreakingNewsWorker(
         const val NOTIFICATION_ID = 1
     }
 
+
+
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun doWork(): Result {
-        val response = NewsApi.api.getBreakingNews()
+        val response = NewsApi.api.followNews()
         return if (response.isSuccessful) {
             newNews = response.body()?.articles?.first()?.url.toString()
             oldNews = newsPreferences.getString("oldNews", "firstData").toString()
@@ -59,7 +62,7 @@ class BreakingNewsWorker(
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
 
-       val pendingIntent = PendingIntent.getActivity(applicationContext,0,intent,(PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
+       val pendingIntent = PendingIntent.getActivity(applicationContext,0,intent,PendingIntent.FLAG_IMMUTABLE)
         val notification = Notification.Builder(applicationContext, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_breaking_news)
             .setContentTitle("Breaking News!")

@@ -22,26 +22,23 @@ class NewsViewModel(app: Application, private val repository: NewsRepository) :
     private val noConnection = "Отсутствует интернет соединение"
     private val networkFailure = "Ошибка сети"
     private val conversionError = "Ошибка преобразования ответа сервера"
-    val breakingNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     val searchNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
+    val followNews: MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     val openArticleLiveData: MutableLiveData<Article> = MutableLiveData()
 
-
     init {
-        getBreakingNews()
+        getFollowNews()
     }
 
-    private fun getBreakingNews() = viewModelScope.launch {
-        safeBreakingNewsCall()
-
+    private fun getFollowNews() = viewModelScope.launch {
+        safeFollowNewsCall()
     }
-
 
     fun getSearchNews(searchQuery: String) = viewModelScope.launch {
         safeSearchNewsCall(searchQuery)
     }
 
-    private fun handleBreakingNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
+    private fun handleNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)
@@ -50,14 +47,7 @@ class NewsViewModel(app: Application, private val repository: NewsRepository) :
         return Resource.Error(response.message())
     }
 
-    private fun handleSearchNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
-        if (response.isSuccessful) {
-            response.body()?.let { resultResponse ->
-                return Resource.Success(resultResponse)
-            }
-        }
-        return Resource.Error(response.message())
-    }
+
 
     fun saveArticle(article: Article) = viewModelScope.launch {
         repository.upsert(article)
@@ -78,7 +68,7 @@ class NewsViewModel(app: Application, private val repository: NewsRepository) :
         try {
             if (hasInternetConnection()) {
                 val response = repository.searchNews(searchQuery)
-                searchNews.postValue(handleSearchNewsResponse(response))
+                searchNews.postValue(handleNewsResponse(response))
             } else {
                 searchNews.postValue(Resource.Error(noConnection))
             }
@@ -90,23 +80,22 @@ class NewsViewModel(app: Application, private val repository: NewsRepository) :
         }
     }
 
-    private suspend fun safeBreakingNewsCall() {
-        breakingNews.postValue(Resource.Loading())
+    private suspend fun safeFollowNewsCall() {
+        followNews.postValue(Resource.Loading())
         try {
             if (hasInternetConnection()) {
-                val response = repository.getBreakingNews()
-                breakingNews.postValue(handleBreakingNewsResponse(response))
+                val response = repository.followNews()
+                followNews.postValue(handleNewsResponse(response))
             } else {
-                breakingNews.postValue(Resource.Error(noConnection))
+                followNews.postValue(Resource.Error(noConnection))
             }
         } catch (t: Throwable) {
             when (t) {
-                is IOException -> breakingNews.postValue(Resource.Error(networkFailure))
-                else -> breakingNews.postValue(Resource.Error(conversionError))
+                is IOException -> followNews.postValue(Resource.Error(networkFailure))
+                else -> followNews.postValue(Resource.Error(conversionError))
             }
         }
     }
-
 
     private fun hasInternetConnection(): Boolean {
         val connectivityManager = getApplication<NewsApp>().getSystemService(
@@ -120,7 +109,5 @@ class NewsViewModel(app: Application, private val repository: NewsRepository) :
             capabilities.hasTransport(TRANSPORT_ETHERNET) -> true
             else -> false
         }
-
     }
-
 }

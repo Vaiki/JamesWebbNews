@@ -44,32 +44,18 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
                 R.id.action_searchNewsFragment_to_articleFragment
             )
         }
-//        var job: Job? = null
-//        binding.etSearch.addTextChangedListener {
-//            job?.cancel()
-//            job = MainScope().launch {
-//                delay(500L)
-//                it?.let {
-//                    if (it.toString().isNotEmpty()) {
-//                        viewModel.getSearchNews(it.toString())
-//                    }
-//                }
-//            }
-//        }
+
        Observable.create<String> { emitter ->
            binding.etSearch.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
                override fun onQueryTextSubmit(query: String?): Boolean {
                   return false
                }
-
                override fun onQueryTextChange(newText: String?): Boolean {
-
                 if (!emitter.isDisposed){
                     emitter.onNext(newText!!)
                 }
                    return false
                }
-
            })
        }
            .debounce(1000,TimeUnit.MILLISECONDS)
@@ -78,7 +64,7 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
            .distinctUntilChanged()
            .observeOn(AndroidSchedulers.mainThread())
            .subscribe { viewModel.getSearchNews(it)
-           Log.e("rx", it)}
+           Log.e(TAG, it)}
 
         viewModel.searchNews.observe(viewLifecycleOwner) { response ->
             when (response) {
@@ -99,8 +85,6 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
                 }
             }
         }
-
-
     }
 
     private fun showProgressBar() {
@@ -111,14 +95,12 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
         binding.paginationProgressBar.visibility = View.INVISIBLE
     }
 
-    fun initRecyclerView() {
+    private fun initRecyclerView() {
         newsAdapter = NewsAdapter()
         binding.rvSearchNews.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
         }
-
-
     }
 
     override fun onDestroy() {

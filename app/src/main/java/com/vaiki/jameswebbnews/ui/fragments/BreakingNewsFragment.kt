@@ -14,6 +14,8 @@ import com.vaiki.jameswebbnews.databinding.FragmentBreakingNewsBinding
 import com.vaiki.jameswebbnews.ui.NewsViewModel
 import com.vaiki.jameswebbnews.util.Resource
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
@@ -21,20 +23,16 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
     private val binding get() = _binding!!
     lateinit var newsAdapter: NewsAdapter
     private val viewModel by sharedViewModel<NewsViewModel>()
-    private val TAG = "BreakingNews"
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentBreakingNewsBinding.bind(view)
         initRecyclerView()
-
         newsAdapter.setOnItemClickListener {
-
             viewModel.openArticle(it)
             findNavController().navigate(R.id.action_breakingNewsFragment2_to_articleFragment)
-
         }
 
-        viewModel.breakingNews.observe(viewLifecycleOwner) { response ->
+        viewModel.followNews.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
@@ -45,7 +43,8 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Toast.makeText(activity,"Произошла ошибка: $message",Toast.LENGTH_LONG).show()
+                        Toast.makeText(activity, "Произошла ошибка: $message", Toast.LENGTH_LONG)
+                            .show()
                     }
                 }
                 is Resource.Loading -> {
@@ -53,8 +52,6 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
                 }
             }
         }
-
-
     }
 
     private fun showProgressBar() {
@@ -65,7 +62,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         binding.paginationProgressBar.visibility = View.INVISIBLE
     }
 
-    fun initRecyclerView() {
+    private fun initRecyclerView() {
         newsAdapter = NewsAdapter()
         binding.rvBreakingNews.apply {
             adapter = newsAdapter

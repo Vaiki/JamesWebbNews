@@ -17,7 +17,6 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
     private val binding get() = _binding!!
     private val viewModel by sharedViewModel<NewsViewModel>()
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentArticleBinding.bind(view)
@@ -29,7 +28,7 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
             }
             binding.fabSave.setOnClickListener {
                 viewModel.saveArticle(article)
-                Snackbar.make(view,"Article saved successfully",Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(view,getString(R.string.saved_article),Snackbar.LENGTH_SHORT).show()
             }
             binding.fabShare.setOnClickListener {
                 val sendIntent: Intent = Intent().apply {
@@ -37,24 +36,14 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
                     putExtra(Intent.EXTRA_TEXT, article.url)
                     type = "text/plain"
                 }
-
                 val shareIntent = Intent.createChooser(sendIntent, null)
                 startActivity(shareIntent)
             }
         }
-
-
-
-
-
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-    }
-
-    companion object {
-        const val ARTICLE_KEY = "article"
     }
 }
