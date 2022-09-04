@@ -43,12 +43,10 @@ class NewsAdapter : RecyclerView.Adapter<NewsViewHolder>() {
     fun setOnItemClickListener(listener:(Article)->Unit){
         onItemClickListener = listener
     }
-
 }
 
 class NewsViewHolder(private val binding: ItemArticlePreviewBinding) :
     RecyclerView.ViewHolder(binding.root) {
-
     fun bind(article: Article) {
         with(binding) {
             tvSource.text = article.source?.name
@@ -58,10 +56,9 @@ class NewsViewHolder(private val binding: ItemArticlePreviewBinding) :
             Glide.with(itemView.context)
                 .load(article.urlToImage)
                 .centerCrop()
-                .placeholder(R.drawable.ic_baseline_newspaper)
+                .placeholder(R.drawable.progress_animation)
+                .error(R.drawable.not_found)
                 .into(ivArticleImage)
-
         }
     }
-
 }

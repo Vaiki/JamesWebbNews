@@ -26,7 +26,6 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
         initRecyclerView()
 
         newsAdapter.setOnItemClickListener {
-
             viewModel.openArticle(it)
             findNavController().navigate(
                 R.id.action_savedNewsFragment_to_articleFragment
@@ -37,11 +36,9 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
             attachToRecyclerView(binding.rvSavedNews)
         }
 
-
         viewModel.getSavedNews().observe(viewLifecycleOwner) { articles ->
             newsAdapter.differ.submitList(articles)
         }
-
     }
 
     private fun initRecyclerView() {
@@ -69,18 +66,14 @@ class SavedNewsFragment : Fragment(R.layout.fragment_saved_news) {
                 val position = viewHolder.adapterPosition
                 val article = newsAdapter.differ.currentList[position]
                 viewModel.deleteArticle(article)
-                Snackbar.make(view, "Successfully deleted article", Snackbar.LENGTH_LONG).apply {
-                    setAction("Undo") {
+                Snackbar.make(view, getString(R.string.del_article), Snackbar.LENGTH_LONG).apply {
+                    setAction(getString(R.string.undo)) {
                         viewModel.saveArticle(article)
                     }
                 }.show()
-
-
             }
-
         }
         return itemTouchHelperCallback
-
     }
 
     override fun onDestroy() {

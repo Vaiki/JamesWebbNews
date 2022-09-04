@@ -60,8 +60,4 @@ class NewsActivity : AppCompatActivity() {
         WorkManager.getInstance(this).enqueueUniquePeriodicWork("breaking_news",ExistingPeriodicWorkPolicy.KEEP,myWorkRequest)
     }
 
-    companion object {
-        const val APP_PREFERENCES = "old_news"
-    }
-
 }

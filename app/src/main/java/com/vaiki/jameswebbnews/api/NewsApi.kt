@@ -10,19 +10,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
+import java.text.SimpleDateFormat
+import java.util.*
 
 interface NewsApi {
-    @GET("/v2/top-headlines")
-    suspend fun getBreakingNews(
-        @Query("q")
-        SpaceNews: String = "Space",
-        @Query("country")
-        country: String = "us",
-        @Query("page")
-        pageNumber: Int = 1,
-        @Query("apiKey")
-        apiKey: String = API_KEY
-    ): Response<NewsResponse>
 
     @GET("/v2/everything")
     suspend fun searchNews(
@@ -31,7 +22,23 @@ interface NewsApi {
         @Query("language")
         language: String = "ru",
         @Query("sortBy")
-        sortBy:String ="publishedAt",
+        sortBy: String = "publishedAt",
+        @Query("page")
+        pageNumber: Int = 1,
+        @Query("apiKey")
+        apiKey: String = API_KEY
+    ): Response<NewsResponse>
+
+    @GET("/v2/everything")
+    suspend fun followNews(
+        @Query("q")
+        search: String = "космос",
+        @Query("language")
+        language: String = "ru",
+        @Query("sortBy")
+        sortBy: String = "publishedAt",
+        @Query("from")
+        from: String = getCurrentDateTime(),
         @Query("page")
         pageNumber: Int = 1,
         @Query("apiKey")
@@ -55,5 +62,11 @@ interface NewsApi {
         val api by lazy {
             retrofit.create(NewsApi::class.java)
         }
+    }
+
+    private fun getCurrentDateTime(): String {
+        val now = Date().time
+        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return formatter.format(now)
     }
 }
