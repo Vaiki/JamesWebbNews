@@ -30,7 +30,7 @@ class NewsViewModel(app: Application, private val repository: NewsRepository) :
         getFollowNews()
     }
 
-    private fun getFollowNews() = viewModelScope.launch {
+ fun getFollowNews() = viewModelScope.launch {
         safeFollowNewsCall()
     }
 

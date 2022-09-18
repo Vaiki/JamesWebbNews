@@ -31,7 +31,18 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
             viewModel.openArticle(it)
             findNavController().navigate(R.id.action_breakingNewsFragment2_to_articleFragment)
         }
+        followNews()
+        binding.swipeToRefresh.setOnRefreshListener {
+            viewModel.getFollowNews()
+            followNews()
+        binding.swipeToRefresh.isRefreshing = false
+        }
 
+
+
+    }
+
+    private fun followNews() {
         viewModel.followNews.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
